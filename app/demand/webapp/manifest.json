@@ -1,0 +1,195 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "kenafricproduction.demand",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{kenafricIndustries}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.12.3",
+      "toolsId": "bb74520e-97c3-4bb1-b3d9-395c59ee3b14"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/processor/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.120.8",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {},
+        "sap.f": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "kenafricproduction.demand.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
+      },
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "DemandList",
+          "target": [
+            "DemandList"
+          ]
+        },
+        {
+          "pattern": "Demand({key}):?query:",
+          "name": "DemandObjectPage",
+          "target": [
+            "DemandList",
+            "DemandObjectPage"
+          ]
+        },
+        {
+          "pattern": "Demand({key})/to_output({key2}):?query:",
+          "name": "OutputsObjectPage",
+          "target": [
+            "DemandList",
+            "DemandObjectPage",
+            "OutputsObjectPage"
+          ]
+        }
+      ],
+      "targets": {
+        "DemandList": {
+          "type": "Component",
+          "id": "DemandList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Demand",
+              "variantManagement": "Page",
+              "navigation": {
+                "Demand": {
+                  "detail": {
+                    "route": "DemandObjectPage"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
+        },
+        "DemandObjectPage": {
+          "type": "Component",
+          "id": "DemandObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Demand",
+              "navigation": {
+                "to_output": {
+                  "detail": {
+                    "route": "OutputsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "to_output/@com.sap.vocabularies.UI.v1.LineItem#i18nDailyOutput": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "enableFullScreen": true
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/Demand({key})"
+        },
+        "OutputsObjectPage": {
+          "type": "Component",
+          "id": "OutputsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/Demand/to_output"
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/Demand({key})/to_output({key2})"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

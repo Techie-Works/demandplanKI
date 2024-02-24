@@ -1,0 +1,42 @@
+{
+  "name": "kenafric-production",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.12.0",
+    "@sap-cloud-sdk/http-client": "^3.12.0",
+    "@sap-cloud-sdk/resilience": "^3.12.0",
+    "@sap/cds": "^7",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/ux-specification": "^1.120.4"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-test": "cds watch --open test/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-test2": "cds watch --open test2/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project2": "cds watch --open project2/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project3": "cds watch --open project3/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project4": "cds watch --open project4/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-demand": "cds watch --open demand/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "sapux": [
+    "app/test",
+    "app/test2",
+    "app/project1",
+    "app/project2",
+    "app/project1",
+    "app/project1",
+    "app/project2",
+    "app/project3",
+    "app/project4",
+    "app/project1",
+    "app/demand"
+  ]
+}
