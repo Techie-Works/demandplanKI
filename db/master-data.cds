@@ -7,5 +7,6 @@ aspect MasterData {}
 entity Sections   : MasterData {
     key sectionID : String(3);
     name              : String(40);
+    target          :  Integer;
 };
 

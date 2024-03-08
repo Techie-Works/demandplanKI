@@ -132,7 +132,8 @@
                     "route": "DemandObjectPage"
                   }
                 }
-              }
+              },
+              "initialLoad": "Enabled"
             }
           },
           "controlAggregation": "beginColumnPages",

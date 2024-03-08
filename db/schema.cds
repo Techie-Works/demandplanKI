@@ -13,8 +13,9 @@ entity Demands : managed, cuid {
     demand               : Integer; // Quantity demanded (in units)
     daysplanned          : Integer;
     descr                : String;
-    total_output               : Integer @readonly;
+    total_output         : Integer @readonly;
     to_output            : Composition of many Outputs on to_output.to_demand = $self;
+    to_status            : Association to DemandStatus;
 };
 
 entity Outputs : managed, cuid{
@@ -35,3 +36,4 @@ entity DemandStatus : CodeList {
   createDeleteHidden: Boolean;
   insertDeleteRestriction: Boolean; // = NOT createDeleteHidden
 };
+
