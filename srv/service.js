@@ -22,78 +22,78 @@
 // //   return super.init()
 
 // // }}
-// // module.exports = {ExtService}
-// // const cds = require('@sap/cds')
-// // module.exports = function (){
-// // //   this.on ('submitOrder', (req)=>{...}) //> custom actions
-// //   this.after ('CREATE',`Demand`,async (req)=>{
-// //     console.log("hallon woorld")
-// //     console.log("i m working",req) ;
-// //     // req.data.BookingSupplementID = maxID + 1
-// //     let totalOutputVar= 0
-// //     for (let i=0;i<req.to_output.length;i++){
-// //     // req.data.BookingSupplementID = maxID + 1
-// //     // req.data.BookingSupplementID = maxID + 1
-// //         totalOutputVar=req.to_output[i].output+totalOutputVar
+// module.exports = {ExtService}
+// const cds = require('@sap/cds')
+// module.exports = function (){
+// //   this.on ('submitOrder', (req)=>{...}) //> custom actions
+//   this.after ('CREATE',`Demand`,async (req)=>{
+//     console.log("hallon woorld")
+//     console.log("i m working",req) ;
+//     // req.data.BookingSupplementID = maxID + 1
+//     let totalOutputVar= 0
+//     for (let i=0;i<req.to_output.length;i++){
+//     // req.data.BookingSupplementID = maxID + 1
+//     // req.data.BookingSupplementID = maxID + 1
+//         totalOutputVar=req.to_output[i].output+totalOutputVar
         
         
-// //     }
-// //     console.log("total",totalOutputVar)
-// //     req.total_output =totalOutputVar
-// //     const TotalOutput = cds.entities.Demands;
-// //         const db = cds.services.db;
+//     }
+//     console.log("total",totalOutputVar)
+//     req.total_output =totalOutputVar
+//     const TotalOutput = cds.entities.Demands;
+//         const db = cds.services.db;
 
-// //         try {
-// //             // Insert the calculated totalOutputVar into the TotalOutput entity
-// //             await db.run(INSERT.into(Demands).entries({ value: totalOutputVar }));
-// //             console.log("Total Output persisted to database.");
-// //         } catch (error) {
-// //             console.error("Error persisting Total Output to database:", error);
-// //         }
+//         try {
+//             // Insert the calculated totalOutputVar into the TotalOutput entity
+//             await db.run(INSERT.into(Demands).entries({ value: totalOutputVar }));
+//             console.log("Total Output persisted to database.");
+//         } catch (error) {
+//             console.error("Error persisting Total Output to database:", error);
+//         }
 
-// //   })
-// // //   this.before ('UPDATE',`*`, (req)=>{...})
-// // //   this.after ('READ',`Books`, (each)=>{...})
-// // }
+//   })
+//   this.before ('UPDATE',`*`, (req)=>{...})
+//   this.after ('READ',`Books`, (each)=>{...})
+//}
 
-// // const cds = require('@sap/cds')
+// const cds = require('@sap/cds')
 
-// // module.exports = function () {
-// //   // Helper function to update total_output
-// //   function updateTotalOutput(req) {
-// //     let totalOutput = 0;
+// module.exports = function () {
+//   // Helper function to update total_output
+//   function updateTotalOutput(req) {
+//     let totalOutput = 0;
 
-// //     if (req.to_output && Array.isArray(req.to_output)) {
-// //       for (const item of req.to_output) {
-// //         if (item.output) {
-// //           totalOutput += item.output;
-// //         } else {
-// //           console.error("Item in to_output is missing 'output' property");
-// //         }
-// //       }
-// //     } else {
-// //       console.error("req.to_output is not a valid array");
-// //     }
+//     if (req.to_output && Array.isArray(req.to_output)) {
+//       for (const item of req.to_output) {
+//         if (item.output) {
+//           totalOutput += item.output;
+//         } else {
+//           console.error("Item in to_output is missing 'output' property");
+//         }
+//       }
+//     } else {
+//       console.error("req.to_output is not a valid array");
+//     }
 
-// //     return totalOutput;
-// //   }
+//     return totalOutput;
+//   }
 
-// //   // Event handler to calculate and save total_output after Demand creation
-// //   this.after('CREATE', 'Demand', async (req) => {
-// //     // ... your other logic (if any)
+//   // Event handler to calculate and save total_output after Demand creation
+//   this.after('CREATE', 'Demand', async (req) => {
+//     // ... your other logic (if any)
 
-// //     req.total_output = updateTotalOutput(req);
+//     req.total_output = updateTotalOutput(req);
 
-// //     // Logic to save the updated 'total_output'
-// //     try {
-// //       await UPDATE(Demands)
-// //         .set({ total_output: req.total_output })
-// //         .where({ ID: req.ID }); // Assuming 'ID' is the primary key of Demands
-// //     } catch (error) {
-// //       console.error("Error updating total_output:", error);
-// //     }
-// //   });
-// // }
+//     // Logic to save the updated 'total_output'
+//     try {
+//       await UPDATE(Demands)
+//         .set({ total_output: req.total_output })
+//         .where({ ID: req.ID }); // Assuming 'ID' is the primary key of Demands
+//     } catch (error) {
+//       console.error("Error updating total_output:", error);
+//     }
+//   });
+// }
 
 // const cds = require('@sap/cds')
 
@@ -160,3 +160,17 @@
 
 //   // ... Other service logic 
 
+// const cds = require ('@sap/cds'); require('./workarounds')
+
+// class Demandservice extends cds.ApplicationService {
+// init() {
+//   const { Demands} = this.entities
+
+//   this.on ('fullfilled', req => UPDATE (req._target) .with ({DemandStatus_code:'F'}))
+//   this.on ('cancel', req => UPDATE (req._target) .with ({DemandStatus_code:'X'}))
+
+//   // Add base class's handlers. Handlers registered above go first.
+//   return super.init()
+
+// }}
+// module.exports = {Demandservice}

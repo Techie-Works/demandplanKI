@@ -1,16 +1,16 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Mar 06 2024 22:30:53 GMT+0300 (East Africa Time)|
+|**Generation Date and Time**<br>Fri Mar 08 2024 13:41:17 GMT+0300 (East Africa Time)|
 |**App Generator**<br>@sap/generator-fiori-elements|
 |**App Generator Version**<br>1.12.3|
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local Cap|
 |**Service URL**<br>http://localhost:4004/odata/v4/analytics/
-|**Module Name**<br>project1|
-|**Application Title**<br>App Title|
-|**Namespace**<br>|
+|**Module Name**<br>demand_overview|
+|**Application Title**<br>Overview|
+|**Namespace**<br>kenafricproduction|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.121.1|
 |**Enable Code Assist Libraries**<br>False|
@@ -18,7 +18,7 @@
 |**Add Eslint configuration**<br>False|
 |**Main Entity**<br>Demands|
 
-## project1
+## demand_overview
 
 An SAP Fiori application.
 
@@ -26,7 +26,7 @@ An SAP Fiori application.
 
 -   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  In order to launch the generated app, simply start your CAP project and navigate to the following location in your browser:
 
-http://localhost:4004/project1/webapp/index.html
+http://localhost:4004/demand_overview/webapp/index.html
 
 #### Pre-requisites:
 

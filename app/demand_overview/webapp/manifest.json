@@ -1,7 +1,7 @@
 {
   "_version": "1.59.0",
   "sap.app": {
-    "id": "project1",
+    "id": "kenafricproduction.demandoverview",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.12.3",
-      "toolsId": "9888dc3d-f573-4cc6-a46f-f0e0dba8dbcc"
+      "toolsId": "a7be15c1-2fa3-4676-bd51-9f6e36458891"
     },
     "dataSources": {
       "mainService": {
@@ -50,7 +50,8 @@
         "sap.m": {},
         "sap.ui.core": {},
         "sap.ushell": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -61,7 +62,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "project1.i18n.i18n"
+          "bundleName": "kenafricproduction.demandoverview.i18n.i18n"
         }
       },
       "": {
@@ -83,17 +84,21 @@
       "css": []
     },
     "routing": {
-      "config": {},
       "routes": [
         {
           "pattern": ":?query:",
           "name": "DemandsList",
-          "target": "DemandsList"
+          "target": [
+            "DemandsList"
+          ]
         },
         {
           "pattern": "Demands({key}):?query:",
           "name": "DemandsObjectPage",
-          "target": "DemandsObjectPage"
+          "target": [
+            "DemandsList",
+            "DemandsObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -111,9 +116,19 @@
                     "route": "DemandsObjectPage"
                   }
                 }
+              },
+              "initialLoad": "Enabled",
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
               }
             }
-          }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
         },
         "DemandsObjectPage": {
           "type": "Component",
@@ -124,9 +139,24 @@
               "editableHeaderContent": false,
               "contextPath": "/Demands"
             }
-          }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/Demands({key})"
         }
+      },
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
       }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
     }
   },
   "sap.fiori": {

@@ -24,15 +24,16 @@ annotate service.Demand with @(
             Label : '{i18n>DaysPlanned}',
         },
         {
-            $Type : 'UI.DataField',
-            Value : total_output,
-            Label : '{i18n>ActualTotalOutput}',
+            $Type : 'UI.DataFieldForAction',
+            Action : 'Demandservice.cancel',
+            Label : 'cancel',
         },
         {
-            $Type : 'UI.DataField',
-            Value : to_status_code,
-            Label : 'to_status_code',
-        },]
+            $Type : 'UI.DataFieldForAction',
+            Action : 'Demandservice.fullfilled',
+            Label : 'fullfilled',
+        }
+       ]
 );
 annotate service.Demand with {
     to_section @Common.ValueList : {
@@ -203,4 +204,16 @@ annotate service.Demand with {
 };
 annotate service.Sections with {
     sectionID @Common.Text : name
+};
+annotate service.Demand with {
+    to_status @Common.Text : to_status.name
+};
+annotate service.DemandStatus with {
+    descr @Common.Text : name
+};
+annotate service.Demand with {
+    to_status @UI.MultiLineText : true
+};
+annotate service.DemandStatus with {
+    code @Common.Text : name
 };

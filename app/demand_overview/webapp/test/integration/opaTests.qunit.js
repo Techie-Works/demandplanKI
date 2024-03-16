@@ -1,15 +1,15 @@
 sap.ui.require(
     [
         'sap/fe/test/JourneyRunner',
-        'project1/test/integration/FirstJourney',
-		'project1/test/integration/pages/DemandsList',
-		'project1/test/integration/pages/DemandsObjectPage'
+        'kenafricproduction/demandoverview/test/integration/FirstJourney',
+		'kenafricproduction/demandoverview/test/integration/pages/DemandsList',
+		'kenafricproduction/demandoverview/test/integration/pages/DemandsObjectPage'
     ],
     function(JourneyRunner, opaJourney, DemandsList, DemandsObjectPage) {
         'use strict';
         var JourneyRunner = new JourneyRunner({
             // start index.html in web folder
-            launchUrl: sap.ui.require.toUrl('project1') + '/index.html'
+            launchUrl: sap.ui.require.toUrl('kenafricproduction/demandoverview') + '/index.html'
         });
 
        
