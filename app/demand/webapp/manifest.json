@@ -115,6 +115,15 @@
             "DemandObjectPage",
             "OutputsObjectPage"
           ]
+        },
+        {
+          "pattern": "Demand({key})/to_newdemand({key2}):?query:",
+          "name": "Demand_to_newdemandObjectPage",
+          "target": [
+            "DemandList",
+            "DemandObjectPage",
+            "Demand_to_newdemandObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -152,6 +161,11 @@
                   "detail": {
                     "route": "OutputsObjectPage"
                   }
+                },
+                "to_newdemand": {
+                  "detail": {
+                    "route": "Demand_to_newdemandObjectPage"
+                  }
                 }
               },
               "controlConfiguration": {
@@ -161,7 +175,8 @@
                     "enableFullScreen": true
                   }
                 }
-              }
+              },
+              "showRelatedApps": true
             }
           },
           "controlAggregation": "midColumnPages",
@@ -179,6 +194,19 @@
           },
           "controlAggregation": "endColumnPages",
           "contextPattern": "/Demand({key})/to_output({key2})"
+        },
+        "Demand_to_newdemandObjectPage": {
+          "type": "Component",
+          "id": "Demand_to_newdemandObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Demand/to_newdemand",
+              "navigation": {}
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/Demand({key})/to_newdemand({key2})"
         }
       }
     },

@@ -11,6 +11,8 @@ annotate service.Demands with @(
             $Type : 'UI.DataField',
             Value : averagerunrate,
             Label : '{i18n>AvgRunRate}',
+            Criticality : averagerunrate,
+            CriticalityRepresentation : #WithIcon,
         },
         {
             $Type : 'UI.DataField',
@@ -173,4 +175,39 @@ annotate service.Demands with @(
             },
         ],
     }
+);
+annotate service.Demands with @(
+    UI.DataPoint #demand : {
+        $Type : 'UI.DataPointType',
+        Value : demand,
+        Title : 'demand',
+    },
+    UI.DataPoint #averagerunrate : {
+        $Type : 'UI.DataPointType',
+        Value : averagerunrate,
+        Title : 'averagerunrate',
+    },
+    UI.DataPoint #totaloutput1 : {
+        $Type : 'UI.DataPointType',
+        Value : totaloutput,
+        Title : 'totaloutput',
+        Criticality : totaloutput,
+    },
+    UI.HeaderFacets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'demand',
+            Target : '@UI.DataPoint#demand',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'averagerunrate',
+            Target : '@UI.DataPoint#averagerunrate',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'totaloutput',
+            Target : '@UI.DataPoint#totaloutput1',
+        },
+    ]
 );

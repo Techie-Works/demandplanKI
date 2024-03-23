@@ -1,1 +1,1 @@
-ID,demandID,createdAt,createdBy,LastChangedAt,LastChangedBy,to_section_sectionID,date,demand,daysplanned,descr,total_output
+ID,demandID,createdAt,createdBy,LastChangedAt,LastChangedBy,to_section_sectionID,date,demand,daysplanned,descr,total_output,to_status_code

@@ -93,6 +93,12 @@ annotate service.Demand with @(
         },
         {
             $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>AddDemand}',
+            ID : 'NewDemand',
+            Target : 'to_newdemand/@UI.LineItem#NewDemand',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
             Label : '{i18n>DailyOutput}',
             ID : 'i18nDailyOutput',
             Target : 'to_output/@UI.LineItem#i18nDailyOutput',
@@ -140,12 +146,18 @@ annotate service.Outputs with @(
     UI.LineItem #i18nDailyOutput : [
         {
             $Type : 'UI.DataField',
-            Value : date,
+            Value : createdAt,
             Label : '{i18n>Date1}',
-        },{
+        },
+        {
             $Type : 'UI.DataField',
             Value : output,
             Label : '{i18n>Output}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : to_line_lineID,
+            Label : 'to_line_lineID',
         },]
 );
 annotate service.Outputs with @(
@@ -164,10 +176,6 @@ annotate service.Outputs with @(
                 $Type : 'UI.DataField',
                 Value : output,
                 Label : '{i18n>Output}',
-            },{
-                $Type : 'UI.DataField',
-                Value : date,
-                Label : '{i18n>Date1}',
             },],
     }
 );
@@ -216,4 +224,140 @@ annotate service.Demand with {
 };
 annotate service.DemandStatus with {
     code @Common.Text : name
+};
+annotate service.NewDemand with @(
+    UI.HeaderFacets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>DemandAddition}',
+            ID : 'i18nDemandAddition',
+            Target : '@UI.FieldGroup#i18nDemandAddition',
+        },
+    ],
+    UI.FieldGroup #i18nDemandAddition : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : reason,
+                Label : '{i18n>Reason}',
+            },{
+                $Type : 'UI.DataField',
+                Value : demand_Addition,
+                Label : '{i18n>AddDemand}',
+            },],
+    }
+);
+annotate service.Demand with @(
+    UI.FieldGroup #DemandAdditions : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : to_newdemand.demand_Addition,
+                Label : '{i18n>AddDemand}',
+            },{
+                $Type : 'UI.DataField',
+                Value : to_newdemand.reason,
+                Label : '{i18n>Reason}',
+            },],
+    }
+);
+annotate service.Demand with @(
+    UI.FieldGroup #i18nDailyOutputs : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : to_output.output,
+                Label : 'output',
+            },],
+    }
+);
+annotate service.NewDemand with @(
+    UI.LineItem #NewDemand : [
+        {
+            $Type : 'UI.DataField',
+            Value : createdAt,
+            Label : '{i18n>Date1}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : reason,
+            Label : '{i18n>Comments}',
+        },{
+            $Type : 'UI.DataField',
+            Value : demand_Addition,
+            Label : '{i18n>DemandAddition}',
+        },]
+);
+annotate service.Demand with @(
+    UI.DataPoint #demand : {
+        $Type : 'UI.DataPointType',
+        Value : demand,
+        Title : 'demand',
+    }
+);
+annotate service.Outputs with @(
+    UI.HeaderFacets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            ID : 'demand',
+            Target : 'to_demand/@UI.DataPoint#demand',
+        },
+    ]
+);
+annotate service.Lines with {
+    linename @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Lines',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : linename,
+                    ValueListProperty : 'lineID',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true
+)};
+annotate service.Lines with {
+    lineID @Common.Text : linename
+};
+annotate service.Outputs with {
+    to_line @UI.MultiLineText : false
+};
+annotate service.Outputs with {
+    to_line @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Lines',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : to_line_lineID,
+                    ValueListProperty : 'lineID',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true
+)};
+annotate service.Lines with {
+    target @Common.Text : linename
+};
+annotate service.Lines with {
+    target @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Outputs',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : target,
+                    ValueListProperty : 'output',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true
+)};
+annotate service.Outputs with {
+    output @Common.Text : to_line_lineID
 };

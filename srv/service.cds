@@ -41,30 +41,33 @@ service Demandservice @(path:'/processor') {
  
 service AnalyticsService {
   entity Outputs as projection on my.Outputs;
+  entity NewDemand as  projection on my.NewDemand;
   entity Demands as select from  my.Demands, my.Outputs{
     Key Demands.demandID,
-    Demands.demand,
-    to_section.name,
-    to_section.target,
+    Demands.demand as Demand,
+    to_section.name as Section,
+    output,
     @Core.Computed
+    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer,
+    sum(to_newdemand.demand_Addition) as NewDemand : Integer,
     sum(output) as totaloutput : Integer,
     count(Outputs.outputId) as numberOfDays: Integer,
     Demands.daysplanned as  daysPlanned : Integer,
     (count(Outputs.outputId)*100)/(Demands.daysplanned) as capacityutil : Decimal(2, 2),
     ((sum(output))/(count(Outputs.outputId))) as averagerunrate: Integer,
-    ((((sum(output))/(count(Outputs.outputId)))*100)/to_section.target) as  efficiency: Decimal,
-    ((Demands.demand)-(sum(output))) as balancetoproduce: Integer,
-    (((sum(output))*100)/(Demands.demand)) as productionefficiency : Decimal(2, 2),
-    (((sum(output))*100)/(Demands.demand)) as Planachevement : Decimal(2, 2),
+    ((((sum(output))/(count(Outputs.outputId)))*100)/to_section.line.target) as  efficiency: Decimal,
+    ((Demands.demand + (sum(to_newdemand.demand_Addition)))-(sum(output))) as balancetoproduce: Integer,
+    (((sum(output))*100)/(Demands.demand )) as productionefficiency : Decimal(2, 2),
+    (((sum(output))*100)/(Demands.demand + (sum(to_newdemand.demand_Addition)))) as afterproductionefficiency : Decimal(2, 2),
+    (((sum(output))*100)/(Demands.demand)) as Planacheivement : Decimal(2, 2),
+    (((sum(output))*100)/(Demands.demand+ (sum(to_newdemand.demand_Addition)))) as afterPlanachievement : Decimal(2, 2),
     (Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) as Remdaysoutput :Decimal(2, 2),
-    ((Demands.demand-(sum(output)))/((sum(output))/(count(Outputs.outputId)))) as days2close : Decimal(2, 2),
-    ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand) as expectedloss : Integer
+    (((Demands.demand + (sum(to_newdemand.demand_Addition)))-(sum(output)))/((sum(output))/(count(Outputs.outputId)))) as days2close : Decimal(2, 2),
+    ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand + (sum(to_newdemand.demand_Addition))) as expectedloss : Integer
     
   } where Demands.to_output.ID = Outputs.ID
-  group by Demands.demandID;
-
-    
-};
+  group by Demands.demandID
+}
 
 
 
