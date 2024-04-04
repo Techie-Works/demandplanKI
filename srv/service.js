@@ -160,17 +160,79 @@
 
 //   // ... Other service logic 
 
-// const cds = require ('@sap/cds'); require('./workarounds')
+//  const cds = require ('@sap/cds')
 
 // class Demandservice extends cds.ApplicationService {
 // init() {
-//   const { Demands} = this.entities
 
-//   this.on ('fullfilled', req => UPDATE (req._target) .with ({DemandStatus_code:'F'}))
-//   this.on ('cancel', req => UPDATE (req._target) .with ({DemandStatus_code:'X'}))
+//   const {Demands} = this.entities
+
+  
+//   this.on ('fullfilled', req => UPDATE (req._target) .with ({to_status_code:'F'}))
+//   this.on ('cancel', req => UPDATE (req._target) .with ({to_status_code:'X'}))
 
 //   // Add base class's handlers. Handlers registered above go first.
-//   return super.init()
+//   return super.init();
 
 // }}
 // module.exports = {Demandservice}
+
+// const cds = require('@sap/cds')
+
+// class Demandservice extends cds.ApplicationService {
+//   init() {
+//     const { Demand } = this.entities;
+
+//   this.on('fullfilled', 'Demand', async (req) => {
+//     const { demandID } = req.data;
+//     const tx = cds.tx(req);
+
+//     try {
+//       if (demandID) {
+//         // Perform the necessary updates when the "fullfilled" action is invoked
+//         const updatedDemand = await tx.run(
+//           UPDATE(Demand, { demandID })
+//             .set('to_status.code', 'F') // Set the status to 'Fullfilled'
+//         );
+
+//         // Return the updated demand entity
+//         return updatedDemand;
+//       } else {
+//         req.error(400, 'demandID is required');
+//       }
+//     } catch (err) {
+//       req.error(err.code || 500, err.message);
+//     }
+//   });
+// });
+//     return super.init()
+
+//     // ... (rest of the code)
+//   }
+// module.exports = { Demandservice }
+
+const cds = require('@sap/cds');
+
+module.exports = cds.service.impl(async function() {
+  const { Demand } = this.entities;
+
+  this.on('fullfilled', 'Demand', async (req) => {
+    const { demandID } = req.data;
+    const tx = cds.tx(req);
+
+    try {
+      if (demandID) {
+        const updatedDemand = await tx.run(
+          UPDATE(Demand, { demandID })
+            .set('to_status.code', 'F')
+        );
+
+        return updatedDemand;
+      } else {
+        return req.error(400, 'Invalid request data. demandID is required to fulfill a demand.');
+      }
+    } catch (err) {
+      req.error(err.code || 500, err.message);
+    }
+  });
+});

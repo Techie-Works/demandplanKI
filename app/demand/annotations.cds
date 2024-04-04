@@ -24,14 +24,9 @@ annotate service.Demand with @(
             Label : '{i18n>DaysPlanned}',
         },
         {
-            $Type : 'UI.DataFieldForAction',
-            Action : 'Demandservice.cancel',
-            Label : 'cancel',
-        },
-        {
-            $Type : 'UI.DataFieldForAction',
-            Action : 'Demandservice.fullfilled',
-            Label : 'fullfilled',
+            $Type : 'UI.DataField',
+            Value : to_status.descr,
+            Criticality : to_status.criticality,
         }
        ]
 );
@@ -120,6 +115,10 @@ annotate service.Demand with @(
             $Type : 'UI.DataField',
             Value : to_section_sectionID,
             Label : '{i18n>Section}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : to_status_code,
         },]
 );
 annotate service.Demand with @(
@@ -214,16 +213,10 @@ annotate service.Sections with {
     sectionID @Common.Text : name
 };
 annotate service.Demand with {
-    to_status @Common.Text : to_status.name
+    to_status @Common.Text : to_status.code
 };
 annotate service.DemandStatus with {
     descr @Common.Text : name
-};
-annotate service.Demand with {
-    to_status @UI.MultiLineText : true
-};
-annotate service.DemandStatus with {
-    code @Common.Text : name
 };
 annotate service.NewDemand with @(
     UI.HeaderFacets : [
@@ -360,4 +353,36 @@ annotate service.Lines with {
 )};
 annotate service.Outputs with {
     output @Common.Text : to_line_lineID
+};
+annotate service.Demand with @(
+    UI.SelectionFields : [
+        to_status.code,]
+);
+annotate service.Demand with {
+    to_status @Common.Label : 'to_status_code'
+};
+annotate service.DemandStatus with {
+    code @Common.Label : 'to_status/code'
+};
+annotate service.DemandStatus with {
+    code @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'DemandStatus',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : code,
+                    ValueListProperty : 'code',
+                },
+            ],
+        },
+        Common.ValueListWithFixedValues : true)};
+annotate service.DemandStatus with {
+    code @Common.Text : descr
+};
+annotate service.DemandStatus with {
+    descr @UI.MultiLineText : true
+};
+annotate service.Demand with {
+    to_status @Common.ValueListWithFixedValues : true
 };

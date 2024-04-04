@@ -4,14 +4,9 @@ annotate service.Demands with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : '{i18n>Section}',
-            Value : name,
-        },
-        {
-            $Type : 'UI.DataField',
             Value : averagerunrate,
             Label : '{i18n>AvgRunRate}',
-            Criticality : averagerunrate,
+            Criticality : Target,
             CriticalityRepresentation : #WithIcon,
         },
         {
@@ -36,18 +31,8 @@ annotate service.Demands with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : Planachevement,
-            Label : '{i18n>PlanAchevement}',
-        },
-        {
-            $Type : 'UI.DataField',
             Value : productionefficiency,
             Label : '{i18n>ProductionEfficiency}',
-        },
-        {
-            $Type : 'UI.DataFieldForAnnotation',
-            Target : '@UI.DataPoint#totaloutput',
-            Label : '{i18n>OutputVsDemand}',
         },
         {
             $Type : 'UI.DataFieldForAnnotation',
@@ -60,16 +45,6 @@ annotate service.Demands with @(
     UI.FieldGroup #GeneratedGroup1 : {
         $Type : 'UI.FieldGroupType',
         Data : [
-            {
-                $Type : 'UI.DataField',
-                Label : 'name',
-                Value : name,
-            },
-            {
-                $Type : 'UI.DataField',
-                Label : 'target',
-                Value : target,
-            },
             {
                 $Type : 'UI.DataField',
                 Label : 'totaloutput',
@@ -112,11 +87,6 @@ annotate service.Demands with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'Planachevement',
-                Value : Planachevement,
-            },
-            {
-                $Type : 'UI.DataField',
                 Label : 'Remdaysoutput',
                 Value : Remdaysoutput,
             },
@@ -142,20 +112,18 @@ annotate service.Demands with @(
     ]
 );
 annotate service.Demands with @(
-    UI.SelectionFields : [
-        name,
-    ]
+    UI.SelectionFields : []
 );
 annotate service.Demands with {
     name @Common.Label : 'name'
 };
-annotate service.Demands with @(
-    UI.DataPoint #totaloutput : {
-        Value : totaloutput,
-        Visualization : #Progress,
-        TargetValue : demand,
-    }
-);
+// annotate service.Demands with @(
+//     UI.DataPoint #totaloutput : {
+//         Value : totaloutput,
+//         Visualization : #Progress,
+//         TargetValue : demand,
+//     }
+// );
 annotate service.Demands with @(
     UI.DataPoint #efficiency : {
         Value : efficiency,
@@ -196,11 +164,6 @@ annotate service.Demands with @(
     UI.HeaderFacets : [
         {
             $Type : 'UI.ReferenceFacet',
-            ID : 'demand',
-            Target : '@UI.DataPoint#demand',
-        },
-        {
-            $Type : 'UI.ReferenceFacet',
             ID : 'averagerunrate',
             Target : '@UI.DataPoint#averagerunrate',
         },
@@ -210,4 +173,23 @@ annotate service.Demands with @(
             Target : '@UI.DataPoint#totaloutput1',
         },
     ]
+);
+annotate service.Demands with @(
+    Analytics.AggregatedProperty #output_average : {
+        $Type : 'Analytics.AggregatedPropertyType',
+        Name : 'output_average',
+        AggregatableProperty : output,
+        AggregationMethod : 'average',
+        ![@Common.Label] : 'output (Average)',
+    },
+    UI.Chart #alpChart : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Column,
+        Dimensions : [
+            Section,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#output_average',
+        ],
+    }
 );

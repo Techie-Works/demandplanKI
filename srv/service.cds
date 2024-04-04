@@ -8,16 +8,15 @@ service Demandservice @(path:'/processor') {
     to_section,
     // Define calculated field
    
-
 // this.before ('CREATE', 'Outputs', async req => {
 //     const { maxID } = await SELECT.one `max(output) as maxID` .from (Outputs)
 //     console.log(maxID)
 //     // req.data.TravelID = maxID + 1
-//   })
-
-    to_status.name as DemandStatusName,
-    @Common.Text: DemandStatusName
+//   })wdeman
+   to_status.name as TravelStatusName,
+    @Common.Text: TravelStatusName
     to_status
+    
   } actions {
     action fullfilled();
     action cancel();
@@ -46,10 +45,10 @@ service AnalyticsService {
     Key Demands.demandID,
     Demands.demand as Demand,
     to_section.name as Section,
-    output,
+    output, //TO REMOVE
     @Core.Computed
-    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer,
-    sum(to_newdemand.demand_Addition) as NewDemand : Integer,
+    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer, //AVG TARGET
+    sum(to_newdemand.demand_Addition) as NewDemand : Integer,  
     sum(output) as totaloutput : Integer,
     count(Outputs.outputId) as numberOfDays: Integer,
     Demands.daysplanned as  daysPlanned : Integer,
@@ -60,16 +59,16 @@ service AnalyticsService {
     (((sum(output))*100)/(Demands.demand )) as productionefficiency : Decimal(2, 2),
     (((sum(output))*100)/(Demands.demand + (sum(to_newdemand.demand_Addition)))) as afterproductionefficiency : Decimal(2, 2),
     (((sum(output))*100)/(Demands.demand)) as Planacheivement : Decimal(2, 2),
-    (((sum(output))*100)/(Demands.demand+ (sum(to_newdemand.demand_Addition)))) as afterPlanachievement : Decimal(2, 2),
+    (((sum(output))*100)/(Demands.demand+ (sum(to_newdemand.demand_Addition)))) as afterPlanachievement : Decimal(2, 2),//REPEATED
     (Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) as Remdaysoutput :Decimal(2, 2),
-    (((Demands.demand + (sum(to_newdemand.demand_Addition)))-(sum(output)))/((sum(output))/(count(Outputs.outputId)))) as days2close : Decimal(2, 2),
+    (((Demands.demand + (sum(to_newdemand.demand_Addition)))-(sum(output)))/((sum(output))/(count(Outputs.outputId)))) as days2close : Decimal(2, 2), //COMPARE TO DAYS
     ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand + (sum(to_newdemand.demand_Addition))) as expectedloss : Integer
     
   } where Demands.to_output.ID = Outputs.ID
   group by Demands.demandID
 }
 
-
-
-//sample code
+extend service AnalyticsService with  {
+ entity dna as projection on AnalyticsService.Demands
+}
 
