@@ -7,13 +7,13 @@
     "applicationVersion": {
       "version": "0.0.1"
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
+    "title": "{{demandOverview}}",
+    "description": "{{demandOverview}}",
     "resources": "resources.json",
     "sourceTemplate": {
-      "id": "@sap/generator-fiori:alp",
+      "id": "@sap/generator-fiori:lrop",
       "version": "1.12.3",
-      "toolsId": "29dfba69-4d01-4c17-8b81-e2a88e9ea869"
+      "toolsId": "c3083899-e109-419c-b172-e4f30e8e8ac4"
     },
     "dataSources": {
       "mainService": {
@@ -45,12 +45,13 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.122.0",
+      "minUI5Version": "1.122.1",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
         "sap.ushell": {},
-        "sap.fe.templates": {}
+        "sap.fe.templates": {},
+        "sap.f": {}
       }
     },
     "contentDensities": {
@@ -83,17 +84,21 @@
       "css": []
     },
     "routing": {
-      "config": {},
       "routes": [
         {
           "pattern": ":?query:",
           "name": "DemandsList",
-          "target": "DemandsList"
+          "target": [
+            "DemandsList"
+          ]
         },
         {
           "pattern": "Demands({key}):?query:",
           "name": "DemandsObjectPage",
-          "target": "DemandsObjectPage"
+          "target": [
+            "DemandsList",
+            "DemandsObjectPage"
+          ]
         }
       ],
       "targets": {
@@ -112,33 +117,22 @@
                   }
                 }
               },
+              "initialLoad": "Enabled",
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "AnalyticalTable",
-                    "selectionMode": "None"
+                    "condensedTableLayout": false,
+                    "type": "ResponsiveTable",
+                    "quickVariantSelection": {
+                      "showCounts": true
+                    }
                   }
                 }
-              },
-              "views": {
-                "paths": [
-                  {
-                    "primary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant"
-                      }
-                    ],
-                    "secondary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
-                      }
-                    ],
-                    "defaultPath": "both"
-                  }
-                ]
               }
             }
-          }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
         },
         "DemandsObjectPage": {
           "type": "Component",
@@ -146,16 +140,33 @@
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Demands"
+              "contextPath": "/Demands",
+              "navigation": {},
+              "sectionLayout": "Page",
+              "showRelatedApps": true
             }
-          }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/Demands({key})"
         }
+      },
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsBeginExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsMidExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
       }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
     }
   },
   "sap.fiori": {
     "registrationIds": [],
-    "archeType": "analytical"
+    "archeType": "transactional"
   }
 }

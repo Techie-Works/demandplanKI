@@ -1,18 +1,18 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Sat Mar 23 2024 09:29:25 GMT+0300 (East Africa Time)|
+|**Generation Date and Time**<br>Sat Apr 06 2024 08:33:37 GMT+0300 (East Africa Time)|
 |**App Generator**<br>@sap/generator-fiori-elements|
 |**App Generator Version**<br>1.12.3|
 |**Generation Platform**<br>Visual Studio Code|
-|**Template Used**<br>Analytical List Page V4|
+|**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local Cap|
 |**Service URL**<br>http://localhost:4004/odata/v4/analytics/
 |**Module Name**<br>project1|
 |**Application Title**<br>App Title|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
-|**UI5 Version**<br>1.122.0|
+|**UI5 Version**<br>1.122.1|
 |**Enable Code Assist Libraries**<br>False|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>False|

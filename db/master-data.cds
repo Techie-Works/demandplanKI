@@ -7,7 +7,7 @@ aspect MasterData {}
 entity Sections   : MasterData {
     key sectionID : String(3);
     name              : String(40);
-    line            : Composition of many Lines on line.section = $self;
+
 };
 
 // Line id sequence 200

@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/ux-specification": "^1.120.6"
+    "@sap/ux-specification": "^1.120.8"
   },
   "scripts": {
     "start": "cds-serve",
@@ -26,6 +26,16 @@
     "watch-project4": "cds watch --open project4/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-demand": "cds watch --open demand/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-demand_overview": "cds watch --open demand_overview/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db/my-demands.sqlite"
+        }
+      }
+    }
   },
   "sapux": [
     "app/test",
@@ -46,6 +56,8 @@
     "app/project1",
     "app/demand_overview",
     "app/project1",
+    "app/project1",
+    "app/project2",
     "app/project1",
     "app/project2"
   ]

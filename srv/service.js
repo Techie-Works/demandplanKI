@@ -1,5 +1,7 @@
 // // const cds = require ('@sap/cds');
 
+//const { Console } = require("console")
+
 // // class ExtService extends cds.ApplicationService{
 // // init() {
 
@@ -211,28 +213,46 @@
 //   }
 // module.exports = { Demandservice }
 
-const cds = require('@sap/cds');
+// const cds = require('@sap/cds');
 
-module.exports = cds.service.impl(async function() {
-  const { Demand } = this.entities;
+// module.exports = cds.service.impl(async function() {
+//   const { Demand } = this.entities;
 
-  this.on('fullfilled', 'Demand', async (req) => {
-    const { demandID } = req.data;
-    const tx = cds.tx(req);
+//   this.on('fullfilled', 'Demand', async (req) => {
+//     const { demandID } = req.data;
+//     const tx = cds.tx(req);
 
-    try {
-      if (demandID) {
-        const updatedDemand = await tx.run(
-          UPDATE(Demand, { demandID })
-            .set('to_status.code', 'F')
-        );
+//     try {
+//       if (demandID) {
+//         const updatedDemand = await tx.run(
+//           UPDATE(Demand, { demandID })
+//             .set('to_status.code', 'F')
+//         );
 
-        return updatedDemand;
-      } else {
-        return req.error(400, 'Invalid request data. demandID is required to fulfill a demand.');
-      }
-    } catch (err) {
-      req.error(err.code || 500, err.message);
-    }
-  });
-});
+//         return updatedDemand;
+//       } else {
+//         return req.error(400, 'Invalid request data. demandID is required to fulfill a demand.');
+//       }
+//     } catch (err) {
+//       req.error(err.code || 500, err.message);
+//     }
+//   });
+// });
+
+// module.exports = srv => {
+
+//   const { Demands } = srv.entities
+
+//   srv.after('READ', 'Outputs', (outputs, req) => {
+
+//     return outputs.map(async to_demand => {
+//       const publications = await cds.transaction(req).run(
+//         SELECT .from(Demands) .where({ to_demand_ID: to_demand.ID })
+//       )
+//       to_demand.numberOfBooks = publications.length
+//       console.log("hello there")
+//     })
+
+//   })
+
+// }

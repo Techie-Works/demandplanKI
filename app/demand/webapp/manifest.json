@@ -108,21 +108,21 @@
           ]
         },
         {
-          "pattern": "Demand({key})/to_output({key2}):?query:",
-          "name": "OutputsObjectPage",
-          "target": [
-            "DemandList",
-            "DemandObjectPage",
-            "OutputsObjectPage"
-          ]
-        },
-        {
           "pattern": "Demand({key})/to_newdemand({key2}):?query:",
           "name": "Demand_to_newdemandObjectPage",
           "target": [
             "DemandList",
             "DemandObjectPage",
             "Demand_to_newdemandObjectPage"
+          ]
+        },
+        {
+          "pattern": "Demand({key})/to_output({key2}):?query:",
+          "name": "Demand_to_outputObjectPage",
+          "target": [
+            "DemandList",
+            "DemandObjectPage",
+            "Demand_to_outputObjectPage"
           ]
         }
       ],
@@ -157,14 +157,14 @@
               "editableHeaderContent": false,
               "contextPath": "/Demand",
               "navigation": {
-                "to_output": {
-                  "detail": {
-                    "route": "OutputsObjectPage"
-                  }
-                },
                 "to_newdemand": {
                   "detail": {
                     "route": "Demand_to_newdemandObjectPage"
+                  }
+                },
+                "to_output": {
+                  "detail": {
+                    "route": "Demand_to_outputObjectPage"
                   }
                 }
               },
@@ -182,19 +182,6 @@
           "controlAggregation": "midColumnPages",
           "contextPattern": "/Demand({key})"
         },
-        "OutputsObjectPage": {
-          "type": "Component",
-          "id": "OutputsObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Demand/to_output"
-            }
-          },
-          "controlAggregation": "endColumnPages",
-          "contextPattern": "/Demand({key})/to_output({key2})"
-        },
         "Demand_to_newdemandObjectPage": {
           "type": "Component",
           "id": "Demand_to_newdemandObjectPage",
@@ -207,6 +194,19 @@
           },
           "controlAggregation": "endColumnPages",
           "contextPattern": "/Demand({key})/to_newdemand({key2})"
+        },
+        "Demand_to_outputObjectPage": {
+          "type": "Component",
+          "id": "Demand_to_outputObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Demand/to_output",
+              "navigation": {}
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/Demand({key})/to_output({key2})"
         }
       }
     },

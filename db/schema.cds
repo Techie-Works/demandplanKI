@@ -29,7 +29,7 @@ entity Outputs : managed, cuid{
     date                  : Date;
     output                : Integer;
     to_demand             : Association to  Demands;
-    to_line               : Association to  Lines;
+    to_line               : Association to Lines;
 
 }
 
@@ -45,3 +45,9 @@ entity DemandStatus : CodeList {
   insertDeleteRestriction: Boolean; // = NOT createDeleteHidden
 };
 
+entity SectionTargets {
+  key ID  :UUID;
+  target : Association to Lines;
+  to_output : Association to one Outputs;
+
+}

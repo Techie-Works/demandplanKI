@@ -150,11 +150,6 @@ annotate service.Outputs with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : output,
-            Label : '{i18n>Output}',
-        },
-        {
-            $Type : 'UI.DataField',
             Value : to_line_lineID,
             Label : 'to_line_lineID',
         },]
@@ -386,3 +381,31 @@ annotate service.DemandStatus with {
 annotate service.Demand with {
     to_status @Common.ValueListWithFixedValues : true
 };
+annotate service.NewDemand with @(
+    UI.Facets : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>OutputDetails}',
+            ID : 'i18nOutputDetails',
+            Target : '@UI.FieldGroup#i18nOutputDetails',
+        },
+    ],
+    UI.FieldGroup #i18nOutputDetails : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : to_demand.to_output.output,
+                Label : 'output',
+            },{
+                $Type : 'UI.DataField',
+                Value : to_demand.to_section.line.target,
+                Label : 'target',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : to_demand.to_section.line.linename,
+                Label : 'linename',
+            },],
+    }
+);
