@@ -22,6 +22,13 @@ annotate service.Demands with @(
             Target : '@UI.Chart#output',
             Label : '{i18n>DemandFulfillement}',
         },
+                  {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#testdp',
+      Label : 'Planned Achievement',
+      ![@UI.Importance] : #High,
+
+    },
         {
             $Type : 'UI.DataField',
             Value : Target,
@@ -67,6 +74,7 @@ annotate service.Demands with @(
                 $Type : 'UI.DataField',
                 Label : 'NewDemand',
                 Value : NewDemand,
+                Criticality : totaloutput,
             },
             {
                 $Type : 'UI.DataField',
@@ -133,28 +141,56 @@ annotate service.Demands with @(
                 Label : 'expectedloss',
                 Value : expectedloss,
             },
+               {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#testdp',
+      Label : 'Planned Achievement',
+      ![@UI.Importance] : #High,
+
+    },
         ],
     },
+    // UI.Chart      #opchart        : {
+    // $Type              : 'UI.ChartDefinitionType',
+    // Title              : 'Stock',
+    // ChartType          : #Column,
+    // Dimensions         : [Outoputdate],
+    // DimensionAttributes: [{
+    //   $Type    : 'UI.ChartDimensionAttributeType',
+    //   Dimension: Section,
+    //   Role     : #Category
+    // },
+    // Measures:[totalOutput],
+    // {
+    //   $Type : 'UI.ChartDimensionAttributeType',
+    //   Dimension: category2,
+    //   Role: #Category2
+    // }
+    // ],
+//     DynamicMeasures    : [ '@Analytics.AggregatedProperty#totaloutput' ],
+
+//   },
     UI.Facets : [
+        {
+            $Type : 'UI.CollectionFacet',
+            Label : 'Test',
+            ID : 'Test',
+            Facets : [
+
+            ],
+        },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneratedFacet1',
             Label : 'General Information',
             Target : '@UI.FieldGroup#GeneratedGroup1',
         },
-        {
-            $Type : 'UI.ReferenceFacet',
-            Label : 'More Info',
-            ID : 'MoreInfo',
-            Target : '@UI.Identification',
-        },
-        {
-            $Type : 'UI.CollectionFacet',
-            Label : 'Test',
-            ID : 'Test',
-            Facets : [
-            ],
-        },
+        //  {
+        //     $Type : 'UI.ReferenceFacet',
+        //     ID : 'GeneratedFacet2',
+        //     Label : 'General Info',
+        //     Target : '@UI.Chart#opchart',
+        // },
     ]
 );
 annotate service.Demands with @(
@@ -177,6 +213,26 @@ annotate service.Demands with @(
         MinimumValue : 0,
         MaximumValue : 100,
     },
+    UI.DataPoint #testdp : {
+    $Type : 'UI.DataPointType',
+    Title : 'Sales India - Generic Card',
+    Value : productionefficiency,
+    // ValueFormat : {
+    //     ScaleFactor : 2,
+    //     NumberOfFractionalDigits : 1
+    // },
+    CriticalityCalculation : {
+        ImprovementDirection : #Maximize,
+        DeviationRangeHighValue : 4,
+        ToleranceRangeHighValue : 3
+    },
+    TargetValue : 2,
+    TrendCalculation : {
+        ReferenceValue : '5201680',
+        DownDifference : 10000000.0
+    }
+    },
+
     UI.Chart #capacityutil : {
         ChartType : #Bullet,
         Measures : [
@@ -530,6 +586,7 @@ annotate service.Demands with @(
         Value : output,
         Visualization : #Progress,
         TargetValue : Demand,
+        Criticality: totaloutput
     }
 );
 annotate service.Demands with @(

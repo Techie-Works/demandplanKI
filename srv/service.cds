@@ -43,11 +43,13 @@ service AnalyticsService {
   entity NewDemand as  projection on my.NewDemand;
   entity Demands as select from  my.Demands, my.Outputs{
     Key Demands.demandID,
+    Demands.to_status.name as Status,
     Demands.createdAt as Demanddate,
     Outputs.createdAt as Outoputdate,
     Demands.demand as Demand,
     to_section.name as Section,
     output, //TO REMOVE
+
     @Core.Computed
     (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer, //AVG TARGET
     sum(to_newdemand.demand_Addition) as NewDemand : Integer,  
@@ -76,4 +78,126 @@ service AnalyticsService {
     
   } where Demands.to_output.ID = Outputs.ID
   group by Demands.demandID
+  
 }
+
+service BIService{
+  entity BIentity as projection on AnalyticsService.Demands
+
+ annotate BIentity with @(
+  Aggregation.ApplySupported: {
+    Transformations: [
+      'aggregate',
+      'topcount',
+      'bottomcount',
+      'identity',
+      'concat',
+      'groupby',
+      'filter',
+      'expand',
+      'search'      
+    ],
+    GroupableProperties: [
+      Section,Status,averagerunrate,Demand,Demanddate,Outoputdate
+    ],
+    AggregatableProperties: [
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: output
+    },
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: efficiency
+    },
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: Demand
+    },
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: Target
+    }
+    
+    ]
+  },
+  Analytics.AggregatedProperty #totaloutput: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : output,
+    AggregationMethod : 'sum',
+    Name : 'totalOutput',
+    ![@Common.Label]: 'Total Output'
+  },
+  //  Analytics.AggregatedProperty #myaggefficiency: {
+  //   $Type : 'Analytics.AggregatedPropertyType',
+  //   AggregatableProperty : efficiency,
+  //   AggregationMethod : 'min',
+  //   Name : 'myefficiency',
+  //   ![@Common.Label]: 'Myfficiency'
+  // },
+  Analytics.AggregatedProperty #myaggdemand: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : Demand,
+    AggregationMethod : 'sum',
+    Name : 'myefficiency',
+    ![@Common.Label]: 'Demand'
+  },
+   Analytics.AggregatedProperty #myaggtarget: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : Target,
+    AggregationMethod : 'sum',
+    Name : 'mytarget',
+    ![@Common.Label]: 'Target'
+  },
+);
+  
+}
+annotate AnalyticsService.Demands with @(
+  Aggregation.ApplySupported: {
+    Transformations: [
+      'aggregate',
+      'topcount',
+      'bottomcount',
+      'identity',
+      'concat',
+      'groupby',
+      'filter',
+      'expand',
+      'search'      
+    ],
+    GroupableProperties: [
+      Section,Outoputdate
+    ],
+    AggregatableProperties #outputagg: [
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: output
+    },
+      {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: efficiency
+    }
+    
+    ]
+  },
+  Analytics.AggregatedProperty #totaloutput: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : output,
+    AggregationMethod : 'sum',
+    Name : 'totalOutput',
+    ![@Common.Label]: 'Total Output'
+  },
+   Analytics.AggregatedProperty #aggefficiency: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : efficiency,
+    AggregationMethod : 'max',
+    Name : 'OV Efficiency',
+    ![@Common.Label]: 'OV Efficiency'
+  },
+ 
+  // UI.PresentationVariant: {
+  //   $Type         : 'UI.PresentationVariantType',
+  //   Visualizations: ['@UI.Chart', ],
+  // },
+);
+  
+

@@ -53,25 +53,25 @@ annotate kenafricproduction.dna with @(UI : {
             Property   : totaloutput
         }]
     },
-    DataPoint #GrossAmountInCompanyCurrency : {
-        $Type                  : 'UI.DataPointType',
-        Value                  : totaloutput,
-        Title                  : 'Output',
-        CriticalityCalculation : {
-            $Type                   : 'UI.CriticalityCalculationType',
-            ImprovementDirection    : #Maximize,
-            DeviationRangeHighValue : 1000000,
-            DeviationRangeLowValue  : 3000000
-        },
-        TrendCalculation       : {
-            $Type                : 'UI.TrendCalculationType',
-            ReferenceValue       : 1000,
-            UpDifference         : 10,
-            StrongUpDifference   : 100,
-            DownDifference       : -10,
-            StrongDownDifference : -100
-        },
-    },
+    // DataPoint #GrossAmountInCompanyCurrency : {
+    //     $Type                  : 'UI.DataPointType',
+    //     Value                  : totaloutput,
+    //     Title                  : 'Output',
+    //     CriticalityCalculation : {
+    //         $Type                   : 'UI.CriticalityCalculationType',
+    //         ImprovementDirection    : #Maximize,
+    //         DeviationRangeHighValue : 1000000,
+    //         DeviationRangeLowValue  : 3000000
+    //     },
+    //     TrendCalculation       : {
+    //         $Type                : 'UI.TrendCalculationType',
+    //         ReferenceValue       : 1000,
+    //         UpDifference         : 10,
+    //         StrongUpDifference   : 100,
+    //         DownDifference       : -10,
+    //         StrongDownDifference : -100
+    //     },
+    // },
     Identification                          : [{
         $Type : 'UI.DataField',
         Value : totaloutput

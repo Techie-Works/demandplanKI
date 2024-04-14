@@ -25,7 +25,9 @@
     "watch-project3": "cds watch --open project3/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-project4": "cds watch --open project4/webapp/index.html?sap-ui-xx-viewCache=false",
     "watch-demand": "cds watch --open demand/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-demand_overview": "cds watch --open demand_overview/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-demand_overview": "cds watch --open demand_overview/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-kibi": "cds watch --open kibi/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-ovptest": "cds watch --open ovptest/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -59,6 +61,9 @@
     "app/project1",
     "app/project2",
     "app/project1",
-    "app/project2"
+    "app/project2",
+    "app/kibi",
+    "app/project2",
+    "app/ovptest"
   ]
 }
