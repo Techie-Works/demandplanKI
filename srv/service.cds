@@ -58,6 +58,7 @@ service AnalyticsService {
     Demands.daysplanned as  daysPlanned : Integer,
     (count(Outputs.outputId)*100)/(Demands.daysplanned) as capacityutil : Decimal(2, 2),
     ((sum(output))/(count(Outputs.outputId))) as averagerunrate: Integer,
+    (((sum(output))/(count(Outputs.outputId))) * (count(Demands.to_output.ID))) as runrateoutput: Integer,
     ((((sum(output))/(count(Outputs.outputId)))*100)/to_line.target) as  efficiency: Decimal,
     Demands.demand - (sum(output)) as balancetoproduce: Integer,
     //sum(output) as balancetoproduce: Integer,
