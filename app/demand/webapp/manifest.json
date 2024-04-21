@@ -171,8 +171,14 @@
               "controlConfiguration": {
                 "to_output/@com.sap.vocabularies.UI.v1.LineItem#i18nDailyOutput": {
                   "tableSettings": {
-                    "type": "ResponsiveTable",
-                    "enableFullScreen": true
+                    "type": "GridTable",
+                    "enableFullScreen": true,
+                    "condensedTableLayout": false
+                  }
+                },
+                "to_newdemand/@com.sap.vocabularies.UI.v1.LineItem#NewDemand": {
+                  "tableSettings": {
+                    "type": "GridTable"
                   }
                 }
               },

@@ -5,14 +5,9 @@ using from '../../db/master-data';
 annotate service.Demand with @(
     UI.LineItem : [
         {
-            $Type : 'UI.DataField',
-            Value : date,
-            Label : '{i18n>Date}',
-        },
-        {
-            $Type : 'UI.DataField',
-            Value : to_section_sectionID,
-            Label : '{i18n>Section}',
+            $Type : 'UI.DataFieldForAnnotation',
+            Target : '@Communication.Contact#contact',
+            Label : '{i18n>SectionName}',
         },{
             $Type : 'UI.DataField',
             Value : demand,
@@ -27,6 +22,7 @@ annotate service.Demand with @(
             $Type : 'UI.DataField',
             Value : to_status.descr,
             Criticality : to_status.criticality,
+            Label : '{i18n>DemandStatus}',
         }
        ]
 );
@@ -108,17 +104,13 @@ annotate service.Demand with @(
             Label : '{i18n>Date1}',
         },{
             $Type : 'UI.DataField',
-            Value : descr,
-            Label : '{i18n>Description}',
-        },
-        {
-            $Type : 'UI.DataField',
             Value : to_section_sectionID,
             Label : '{i18n>Section}',
         },
         {
             $Type : 'UI.DataField',
             Value : to_status_code,
+            Label : 'Demand Status',
         },]
 );
 annotate service.Demand with @(
@@ -133,11 +125,6 @@ annotate service.Demand with @(
                 $Type : 'UI.DataField',
                 Value : demand,
                 Label : '{i18n>Demand}',
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : total_output,
-                Label : '{i18n>TotalOutput}',
             },],
     }
 );
@@ -151,7 +138,12 @@ annotate service.Outputs with @(
         {
             $Type : 'UI.DataField',
             Value : to_line_lineID,
-            Label : 'to_line_lineID',
+            Label : '{i18n>NumberOfLines}',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : output,
+            Label : 'output',
         },]
 );
 annotate service.Outputs with @(
@@ -170,6 +162,11 @@ annotate service.Outputs with @(
                 $Type : 'UI.DataField',
                 Value : output,
                 Label : '{i18n>Output}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : to_demand.to_output.to_line_lineID,
+                Label : 'to_line_lineID',
             },],
     }
 );
@@ -208,7 +205,10 @@ annotate service.Sections with {
     sectionID @Common.Text : name
 };
 annotate service.Demand with {
-    to_status @Common.Text : to_status.code
+    to_status @Common.Text : {
+            $value : to_status.name,
+            ![@UI.TextArrangement] : #TextOnly,
+        }
 };
 annotate service.DemandStatus with {
     descr @Common.Text : name
@@ -287,13 +287,7 @@ annotate service.Demand with @(
     }
 );
 annotate service.Outputs with @(
-    UI.HeaderFacets : [
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'demand',
-            Target : 'to_demand/@UI.DataPoint#demand',
-        },
-    ]
+    UI.HeaderFacets : []
 );
 annotate service.Lines with {
     linename @(Common.ValueList : {
@@ -303,7 +297,7 @@ annotate service.Lines with {
                 {
                     $Type : 'Common.ValueListParameterInOut',
                     LocalDataProperty : linename,
-                    ValueListProperty : 'lineID',
+                    ValueListProperty : 'linename',
                 },
             ],
         },
@@ -346,9 +340,6 @@ annotate service.Lines with {
         },
         Common.ValueListWithFixedValues : true
 )};
-annotate service.Outputs with {
-    output @Common.Text : to_line_lineID
-};
 annotate service.Demand with @(
     UI.SelectionFields : [
         to_status.code,]
@@ -407,5 +398,23 @@ annotate service.NewDemand with @(
                 Value : to_demand.to_section.line.linename,
                 Label : 'linename',
             },],
+    }
+);
+annotate service.Outputs with {
+    to_line @Common.Text : {
+            $value : to_line.linename,
+            ![@UI.TextArrangement] : #TextOnly,
+        }
+};
+annotate service.Lines with {
+    linename @Common.Text : {
+        $value : lineID,
+        ![@UI.TextArrangement] : #TextOnly,
+    }
+};
+annotate service.Demand with @(
+    Communication.Contact #contact : {
+        $Type : 'Communication.ContactType',
+        fn : Section,
     }
 );

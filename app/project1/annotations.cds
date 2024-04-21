@@ -14,8 +14,8 @@ annotate service.Demands with @(
         },
         {
             $Type : 'UI.DataFieldForAnnotation',
-            Target : '@UI.DataPoint#output5',
-            Label : '{i18n>OutputVsDemand1}',
+            Target : '@UI.DataPoint#totaloutput',
+            Label : 'totaloutput',
         },
         {
             $Type : 'UI.DataFieldForAnnotation',
@@ -23,13 +23,6 @@ annotate service.Demands with @(
             Label : '{i18n>DemandFulfillement}',
         },
                   {
-      $Type : 'UI.DataFieldForAnnotation',
-      Target: '@UI.DataPoint#testdp',
-      Label : 'Planned Achievement',
-      ![@UI.Importance] : #High,
-
-    },
-        {
             $Type : 'UI.DataField',
             Value : Target,
             Label : 'Target',
@@ -44,6 +37,13 @@ annotate service.Demands with @(
             Value : balancetoproduce,
             Label : '{i18n>BalToProduce}',
         },
+        {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#testdp',
+      Label : 'Planned Achievement',
+      ![@UI.Importance] : #High,
+
+    },
     ]
 );
 annotate service.Demands with @(
@@ -316,7 +316,7 @@ annotate service.Demands with @(
         CriticalityCalculation : {
             ImprovementDirection : #Minimize,
             DeviationRangeHighValue : minvalue,
-            ToleranceRangeHighValue : minvalue,
+            ToleranceRangeHighValue : maximumvalue,
         },
     },
     UI.Chart #output1 : {
@@ -612,5 +612,27 @@ annotate service.Demands with @(
     Communication.Contact #contact1 : {
         $Type : 'Communication.ContactType',
         fn : Section,
+    }
+);
+annotate service.Demands with {
+    efficiency @Measures.Unit : '%'
+};
+annotate service.Demands with {
+    afterproductionefficiency @Measures.Unit : '%'
+};
+annotate service.Demands with {
+    afterPlanachievement @Measures.Unit : '%'
+};
+annotate service.Demands with {
+    Planacheivement @Measures.Unit : '%'
+};
+annotate service.Demands with {
+    Demand @Measures.Unit : 'Ctns.'
+};
+annotate service.Demands with @(
+    UI.DataPoint #totaloutput : {
+        Value : totaloutput,
+        Visualization : #Progress,
+        TargetValue : Demand,
     }
 );

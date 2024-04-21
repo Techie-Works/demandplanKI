@@ -121,7 +121,7 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "condensedTableLayout": false,
+                    "condensedTableLayout": true,
                     "type": "ResponsiveTable",
                     "quickVariantSelection": {
                       "showCounts": true

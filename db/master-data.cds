@@ -12,7 +12,7 @@ entity Sections   : MasterData {
 
 // Line id sequence 200
 entity Lines : MasterData {
-    Key  lineID      : String(5) ;
+    Key  lineID      : String(20) ;
     linename         : String(20);
     section           : Association to  Sections;
     target            : Integer;

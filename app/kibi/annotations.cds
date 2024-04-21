@@ -84,11 +84,11 @@ annotate service.BIentity with @(
       Target: '@Communication.Contact#contact1',
       Label : '{i18n>Section}',
     },
-    {
-      $Type : 'UI.DataFieldForAnnotation',
-      Target: '@UI.DataPoint#output5',
-      Label : '{i18n>OutputVsDemand1}',
-    },
+      {
+          $Type : 'UI.DataFieldForAnnotation',
+          Target : '@UI.DataPoint#totaloutput3',
+          Label : 'totaloutput',
+      },
     {
             $Type : 'UI.DataFieldForAnnotation',
             Target: '@UI.DataPoint#efficiencydp',
@@ -449,13 +449,13 @@ annotate service.BIentity with @(
 annotate service.BIentity with @(
     UI.DataPoint #totaloutput2 : {
         Value : totaloutput,
-        MinimumValue : 0,
-        MaximumValue : 500,
-        TargetValue : Target,
+        MinimumValue : Days,
+        MaximumValue : Demand,
+        TargetValue : Demand,
         CriticalityCalculation : {
             ImprovementDirection : #Minimize,
             DeviationRangeHighValue : Demand,
-            ToleranceRangeHighValue : Demand,
+            ToleranceRangeHighValue : totaloutput,
         },
     },
     UI.Chart #totaloutput1 : {
@@ -470,5 +470,12 @@ annotate service.BIentity with @(
                 Measure : totaloutput,
             },
         ],
+    }
+);
+annotate service.BIentity with @(
+    UI.DataPoint #totaloutput3 : {
+        Value : totaloutput,
+        Visualization : #Progress,
+        TargetValue : Demand,
     }
 );
