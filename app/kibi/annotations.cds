@@ -7,7 +7,7 @@ annotate service.BIentity with @(
   UI.Chart              : {
     $Type              : 'UI.ChartDefinitionType',
     Title              : 'Stock',
-    ChartType          :#ColumnStackedDual,
+    ChartType          :#CombinationStackedDual,
     Dimensions         : [Section],
     DimensionAttributes: [{
       $Type    : 'UI.ChartDimensionAttributeType',
