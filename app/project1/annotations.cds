@@ -171,14 +171,7 @@ annotate service.Demands with @(
 
 //   },
     UI.Facets : [
-        {
-            $Type : 'UI.CollectionFacet',
-            Label : 'Test',
-            ID : 'Test',
-            Facets : [
 
-            ],
-        },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneratedFacet1',

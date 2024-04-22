@@ -7,7 +7,7 @@ annotate service.BIentity with @(
   UI.Chart              : {
     $Type              : 'UI.ChartDefinitionType',
     Title              : 'Stock',
-    ChartType          :#CombinationDual ,
+    ChartType          :#ColumnStackedDual,
     Dimensions         : [Section],
     DimensionAttributes: [{
       $Type    : 'UI.ChartDimensionAttributeType',
@@ -20,9 +20,12 @@ annotate service.BIentity with @(
     //   Role: #Category2
     // }
     ],
+    // Measures : [
+    //     totaloutput
+    // ],
     DynamicMeasures    : [ 
-      ![@Analytics.AggregatedProperty#myaggdemand],
       ![@Analytics.AggregatedProperty#totaloutput],
+      ![@Analytics.AggregatedProperty#myaggdemand],
       ![@Analytics.AggregatedProperty#myaggtarget],
 
   
@@ -33,12 +36,6 @@ annotate service.BIentity with @(
     //   DynamicMeasure: ![@Analytics.AggregatedProperty#totaloutput],
     //   Role          : #Axis1
     // },
-      {
-      $Type         : 'UI.ChartMeasureAttributeType',
-      DynamicMeasure: ![@Analytics.AggregatedProperty#myaggdemand],
-      Role          : #Axis1,
-      // DataPoint : '@UI.DataPoint#totaloutputchart',
-    },
      {
       $Type         : 'UI.ChartMeasureAttributeType',
       DynamicMeasure: ![@Analytics.AggregatedProperty#totaloutput],
@@ -46,6 +43,12 @@ annotate service.BIentity with @(
       DataPoint : '@UI.DataPoint#totaloutputchart',
       // DataPoint : '@UI.DataPoint#totaloutputchart',
 
+    },
+      {
+      $Type         : 'UI.ChartMeasureAttributeType',
+      DynamicMeasure: ![@Analytics.AggregatedProperty#myaggdemand],
+      Role          : #Axis1,
+      // DataPoint : '@UI.DataPoint#totaloutputchart',
     },
      {
       $Type         : 'UI.ChartMeasureAttributeType',
@@ -79,25 +82,47 @@ annotate service.BIentity with @(
     // SortOrder: #Desc
   },
   UI.LineItem #bitable  : [
-    {
-      $Type : 'UI.DataFieldForAnnotation',
-      Target: '@Communication.Contact#contact1',
-      Label : '{i18n>Section}',
-    },
-      {
-          $Type : 'UI.DataFieldForAnnotation',
-          Target : '@UI.DataPoint#totaloutput3',
-          Label : 'totaloutput',
-      },
-    {
+  {
             $Type : 'UI.DataFieldForAnnotation',
-            Target: '@UI.DataPoint#efficiencydp',
-            Label : '{i18n>Efficiency}',
+            Target : '@Communication.Contact#contact1',
+            Label : '{i18n>Section}',
         },
-    {
+        {
+            $Type : 'UI.DataField',
+            Value : Demand,
+            Label : 'Demand',
+        },
+        {
+            $Type : 'UI.DataFieldForAnnotation',
+            Target : '@UI.DataPoint#totaloutputs',
+            Label : 'Tota Output',
+        },
+        {
+            $Type : 'UI.DataFieldForAnnotation',
+            Target : '@UI.Chart#output',
+            Label : '{i18n>DemandFulfillement}',
+        },
+                  {
+            $Type : 'UI.DataField',
+            Value : Target,
+            Label : 'Target',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : averagerunrate,
+            Label : 'Run Rate',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : balancetoproduce,
+            Label : '{i18n>BalToProduce}',
+        },
+        {
       $Type : 'UI.DataFieldForAnnotation',
-      Target: '@UI.Chart#output',
-      Label : '{i18n>DemandFulfillement}',
+      Target: '@UI.DataPoint#testdp',
+      Label : 'Planned Achievement',
+      ![@UI.Importance] : #High,
+
     },
 
     // {
@@ -107,12 +132,12 @@ annotate service.BIentity with @(
     //   ![@UI.Importance] : #High,
 
     // },
-      {
-          $Type : 'UI.DataField',
-          Value : Target,
-          Label : 'Target',
-          ![@UI.Importance] : #High,
-      },
+    //   {
+    //       $Type : 'UI.DataField',
+    //       Value : Target,
+    //       Label : 'Target',
+    //       ![@UI.Importance] : #High,
+    //   },
     // {
     //   $Type : 'UI.DataFieldForAnnotation',
     //   Target: '@UI.DataPoint#dpplan',
@@ -120,27 +145,32 @@ annotate service.BIentity with @(
     //   ![@UI.Importance] : #High,
 
     // },
-      {
-          $Type : 'UI.DataField',
-          Value : balancetoproduce,
-          Label : 'balancetoproduce',
-          Criticality : balancetoproduce,
-          CriticalityRepresentation : #WithIcon,
-      },
-      {
-          $Type : 'UI.DataFieldForAnnotation',
-          Target : '@UI.Chart#totaloutput',
-          Label : 'totaloutput',
-          ![@UI.Importance] : #High,
-      },
-      {
-          $Type : 'UI.DataFieldForAnnotation',
-          Target : '@UI.Chart#totaloutput1',
-          Label : 'Total Output vs Target',
-          ![@UI.Importance] : #High,
-      },
+    //   {
+    //       $Type : 'UI.DataField',
+    //       Value : balancetoproduce,
+    //       Label : 'balancetoproduce',
+    //       Criticality : balancetoproduce,
+    //       CriticalityRepresentation : #WithIcon,
+    //   },
+    //   {
+    //       $Type : 'UI.DataFieldForAnnotation',
+    //       Target : '@UI.Chart#totaloutput',
+    //       Label : 'totaloutput',
+    //       ![@UI.Importance] : #High,
+    //   },
+    //   {
+    //       $Type : 'UI.DataFieldForAnnotation',
+    //       Target : '@UI.Chart#totaloutput1',
+    //       Label : 'Total Output vs Target',
+    //       ![@UI.Importance] : #High,
+    //   },
   
   ],
+     UI.DataPoint #totaloutputs : {
+        Value : totaloutput,
+        Visualization : #Progress,
+        TargetValue : Demand,
+    },
   UI.DataPoint #dpcap   : {
     // $Type      : 'UI.DataPointType',
     // Title      : 'Believeit ',
@@ -250,7 +280,7 @@ annotate service.BIentity with @(
     $Type          : 'UI.ChartDefinitionType',
     ChartType      : #Bar,
     Dimensions     : [Section, ],
-    DynamicMeasures: ['@Analytics.AggregatedProperty#totaloutput', ],
+    DynamicMeasures: ['@Analytics.AggregatedProperty#myaggefficiency', ],
   },
   UI.PresentationVariant #visualFilter: {
     $Type         : 'UI.PresentationVariantType',
@@ -315,10 +345,10 @@ annotate service.BIentity with @(
         $Type : 'UI.ChartDefinitionType',
         ChartType : #Bar,
         Dimensions : [
-            Demand,
+            Section,
         ],
         DynamicMeasures : [
-            '@Analytics.AggregatedProperty#totaloutput',
+            '@Analytics.AggregatedProperty#myaggcapacity',
         ],
     },
     UI.PresentationVariant #visualFilter2 : {

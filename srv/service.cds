@@ -51,7 +51,7 @@ service AnalyticsService {
     output, //TO REMOVE
 
     @Core.Computed
-    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer, //AVG TARGET
+    (sum(to_output.to_line.target))*(count(Outputs.outputId)) as Target :Integer, //AVG TARGET
     sum(to_newdemand.demand_Addition) as NewDemand : Integer,  
     sum(output) as totaloutput : Integer,
     count(Demands.to_output.ID) as Days: Integer,
@@ -71,6 +71,7 @@ service AnalyticsService {
     (((Demands.demand + (sum(to_newdemand.demand_Addition)))-(sum(output)))/((sum(output))/(count(Outputs.outputId)))) as afterdays2close : Decimal(2, 2), //COMPARE TO DAYS
     ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand) as expectedloss : Integer,
     ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand + (sum(to_newdemand.demand_Addition))) as afterexpectedloss : Integer,
+(sum(to_output.to_line.target))/(count(to_output.to_line.target)) * count(Demands.to_output.ID) as runrateTarget :Integer,
 
     1*100 as maximumvalue  :Decimal(5,2),
     50 as minvalue  :Decimal(5,2),  
@@ -104,7 +105,7 @@ service BIService{
     AggregatableProperties: [
       {
       $Type : 'Aggregation.AggregatablePropertyType',
-      Property: output
+      Property: totaloutput
     },
       {
       $Type : 'Aggregation.AggregatablePropertyType',
@@ -116,25 +117,36 @@ service BIService{
     },
       {
       $Type : 'Aggregation.AggregatablePropertyType',
-      Property: Target
+      Property: runrateTarget
+    },
+     {
+      $Type : 'Aggregation.AggregatablePropertyType',
+      Property: capacityutil
     }
     
     ]
   },
   Analytics.AggregatedProperty #totaloutput: {
     $Type : 'Analytics.AggregatedPropertyType',
-    AggregatableProperty : output,
+    AggregatableProperty : totaloutput,
     AggregationMethod : 'sum',
     Name : 'totalOutput',
     ![@Common.Label]: 'Total Output'
   },
-  //  Analytics.AggregatedProperty #myaggefficiency: {
-  //   $Type : 'Analytics.AggregatedPropertyType',
-  //   AggregatableProperty : efficiency,
-  //   AggregationMethod : 'min',
-  //   Name : 'myefficiency',
-  //   ![@Common.Label]: 'Myfficiency'
-  // },
+    Analytics.AggregatedProperty #totaloutputfilter: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : output,
+    AggregationMethod : 'sum',
+    Name : 'Output',
+    ![@Common.Label]: 'Output'
+  },
+   Analytics.AggregatedProperty #myaggefficiency: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty : efficiency,
+    AggregationMethod : 'sum',
+    Name : 'myefficiency',
+    ![@Common.Label]: 'Efficiency'
+  },
   Analytics.AggregatedProperty #myaggdemand: {
     $Type : 'Analytics.AggregatedPropertyType',
     AggregatableProperty : Demand,
@@ -144,10 +156,17 @@ service BIService{
   },
    Analytics.AggregatedProperty #myaggtarget: {
     $Type : 'Analytics.AggregatedPropertyType',
-    AggregatableProperty : Target,
+    AggregatableProperty :runrateTarget,
     AggregationMethod : 'sum',
     Name : 'mytarget',
     ![@Common.Label]: 'Target'
+  },
+    Analytics.AggregatedProperty #myaggcapacity: {
+    $Type : 'Analytics.AggregatedPropertyType',
+    AggregatableProperty :capacityutil,
+    AggregationMethod : 'sum',
+    Name : 'mycapacity',
+    ![@Common.Label]: 'Capacity Utilization'
   },
 );
   
