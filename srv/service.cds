@@ -51,7 +51,9 @@ service AnalyticsService {
     output, //TO REMOVE
 
     @Core.Computed
-    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer, //AVG TARGET
+    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) as Target :Integer,
+    (sum(to_output.to_line.target))/(count(to_output.to_line.target)) * count(Demands.to_output.ID) as runrateTarget :Integer, 
+     //AVG TARGET
     sum(to_newdemand.demand_Addition) as NewDemand : Integer,  
     sum(output) as totaloutput : Integer,
     count(Demands.to_output.ID) as Days: Integer,
@@ -72,7 +74,7 @@ service AnalyticsService {
     ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand) as expectedloss : Integer,
     ((Demands.daysplanned - count(Outputs.outputId))*((sum(output))/(count(Outputs.outputId))) + sum(output)) -(Demands.demand + (sum(to_newdemand.demand_Addition))) as afterexpectedloss : Integer,
 
-    1*100 as maximumvalue  :Decimal(5,2),
+    1*75 as maximumvalue  :Decimal(5,2),
     50 as minvalue  :Decimal(5,2),  
     (sum(to_output.to_line.target))/(count(to_output.to_line.target)) *(Demands.daysplanned) as relatedcapacity: Integer,
 
@@ -152,3 +154,34 @@ service BIService{
 );
   
 }
+
+annotate AnalyticsService.Demands @Aggregation.ApplySupported: {
+    $Type                 : 'Aggregation.ApplySupportedType',
+    Transformations       : [
+        'aggregate',
+        'groupby',
+        'filter',
+        'search',
+        'concat',
+        'skip',
+        'orderby',
+        'top'
+    ],
+    Rollup                : #None,
+    From                  : false,
+    GroupableProperties   : [
+        Section
+    ],
+    AggregatableProperties: [{
+        Property                    : output, 
+        SupportedAggregationMethods : [
+            'sum',
+            'max',
+            'min',
+            'average'
+        ],
+        RecommendedAggregationMethod: 'sum',
+    
+    }],
+};
+  

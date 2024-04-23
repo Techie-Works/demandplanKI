@@ -414,9 +414,9 @@ annotate service.Demands with @(
         Value : averagerunrate,
         TargetValue : Target,
         CriticalityCalculation : {
-            ImprovementDirection : #Maximize,
-            DeviationRangeLowValue : maximumvalue,
-            ToleranceRangeLowValue : maximumvalue,
+            ImprovementDirection : #Minimize,
+            DeviationRangeHighValue : maximumvalue,
+            ToleranceRangeHighValue : maximumvalue,
         },
     },
     UI.Chart #averagerunrate : {
@@ -634,5 +634,36 @@ annotate service.Demands with @(
         Value : totaloutput,
         Visualization : #Progress,
         TargetValue : Demand,
+    }
+);
+annotate service.Demands with @(
+    Analytics.AggregatedProperty #output_sum : {
+        $Type : 'Analytics.AggregatedPropertyType',
+        Name : 'output_sum',
+        AggregatableProperty : output,
+        AggregationMethod : 'sum',
+        ![@Common.Label] : 'output (Sum)',
+    },
+    UI.Chart #alpChart : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Bar,
+        Dimensions : [
+            Section,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#output_sum',
+        ],
+    }
+);
+annotate service.Demands with @(
+    UI.Chart #alpChart1 : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #HorizontalWaterfall,
+        Dimensions : [
+            Section,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#output_sum',
+        ],
     }
 );
