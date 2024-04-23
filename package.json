@@ -10,11 +10,17 @@
     "@sap-cloud-sdk/http-client": "^3.12.0",
     "@sap-cloud-sdk/resilience": "^3.12.0",
     "@sap/cds": "^7",
-    "express": "^4"
+    "express": "^4",
+    "@sap/cds-hana": "^2",
+    "@sap/xssec": "^3"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
     "@sap/ux-specification": "^1.120.8"
+  },
+  "engines": {
+    "node": "^18"
   },
   "scripts": {
     "start": "cds-serve",
@@ -36,6 +42,10 @@
         "credentials": {
           "url": "db/my-demands.sqlite"
         }
+      },
+      "[production]": {
+        "db": "hana",
+        "auth": "xsuaa"
       }
     }
   },
